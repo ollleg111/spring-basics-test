@@ -13,4 +13,10 @@ public class Test {
     String test() {
         return "test";
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/test", produces = "text/plain")
+    public @ResponseBody
+    String test2() {
+        return "test_2";
+    }
 }
