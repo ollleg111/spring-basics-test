@@ -1,19 +1,21 @@
 package com.hw1;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-@org.springframework.stereotype.Service
-public class Service {
+@Service
+public class Services {
 
     private long id;
     private String name;
     private List paramsToCall;
 
-    public Service() {
+    public Services() {
 
     }
 
-    public Service(long id, String name, List paramsToCall) {
+    public Services(long id, String name, List paramsToCall) {
         this.id = id;
         this.name = name;
         this.paramsToCall = paramsToCall;

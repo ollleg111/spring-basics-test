@@ -24,7 +24,7 @@
         <!--        <constructor-arg name="" value=""/>-->
     </bean>
 
-    <bean id="service" class="com.hw1.Service">
+    <bean id="service" class="com.hw1.Services">
         <!--        <constructor-arg name="" value=""/>-->
     </bean>
 

@@ -12,7 +12,7 @@ public class Controller {
     private Route route;
 
     @Autowired
-    private Service service;
+    private Services services;
 
     @Autowired
     private Step step;
@@ -24,15 +24,15 @@ public class Controller {
         route.getId();
         route.getSteps();
 
-        service.getId();
-        service.getName();
-        service.getParamsToCall();
+        services.getId();
+        services.getName();
+        services.getParamsToCall();
 
         step.getId();
         step.getGetParamsServiceTo();
         step.getParamsServiceFrom();
-        step.getServiceFrom();
-        step.getServiceTo();
+        step.getServicesFrom();
+        step.getServicesTo();
 
         return "all is ok";
     }
