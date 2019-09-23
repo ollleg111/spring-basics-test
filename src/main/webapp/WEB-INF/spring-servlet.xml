@@ -9,4 +9,9 @@
 
     <context:component-scan base-package="com"/>
 
+    <bean id="orderService" class="com.OrderService">
+<!--        <constructor-arg name="" value=""/>-->
+
+    </bean>
+
 </beans>
