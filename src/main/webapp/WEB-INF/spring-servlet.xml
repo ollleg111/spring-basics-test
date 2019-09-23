@@ -9,9 +9,27 @@
 
     <context:component-scan base-package="com"/>
 
-    <bean id="orderService" class="com.OrderService">
+    <bean id="orderService" class="com.classwork.OrderService">
 <!--        <constructor-arg name="" value=""/>-->
+    </bean>
 
+    <bean id="orderDAO" class="com.classwork.OrderDAO">
+        <!--        <constructor-arg name="" value=""/>-->
+    </bean>
+
+
+
+
+    <bean id="route" class="com.hw1.Route">
+        <!--        <constructor-arg name="" value=""/>-->
+    </bean>
+
+    <bean id="service" class="com.hw1.Service">
+        <!--        <constructor-arg name="" value=""/>-->
+    </bean>
+
+    <bean id="step" class="com.hw1.Step">
+        <!--        <constructor-arg name="" value=""/>-->
     </bean>
 
 </beans>
