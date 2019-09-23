@@ -10,13 +10,13 @@ public class Route {
     private String id;
     private List steps;
 
+    public Route() {
+
+    }
+
     public Route(String id, List steps) {
         this.id = id;
         this.steps = steps;
-    }
-
-    public Route() {
-
     }
 
     public String getId() {
