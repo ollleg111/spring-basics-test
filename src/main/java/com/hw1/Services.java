@@ -12,7 +12,6 @@ public class Services {
     private List paramsToCall;
 
     public Services() {
-
     }
 
     public Services(long id, String name, List paramsToCall) {

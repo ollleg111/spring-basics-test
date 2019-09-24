@@ -11,7 +11,6 @@ public class Route {
     private List steps;
 
     public Route() {
-
     }
 
     public Route(String id, List steps) {

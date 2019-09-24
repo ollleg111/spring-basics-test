@@ -21,15 +21,22 @@
 
 
     <bean id="route" class="com.hw1.Route">
-        <!--        <constructor-arg name="" value=""/>-->
+                <constructor-arg name="id" value=""/>
+                <constructor-arg name="steps" value=""/>
     </bean>
 
     <bean id="service" class="com.hw1.Services">
-        <!--        <constructor-arg name="" value=""/>-->
+                <constructor-arg name="id" value=""/>
+                <constructor-arg name="name" value=""/>
+                <constructor-arg name="paramsToCall" value=""/>
     </bean>
 
     <bean id="step" class="com.hw1.Step">
-        <!--        <constructor-arg name="" value=""/>-->
+                <constructor-arg name="id" value=""/>
+                <constructor-arg name="servicesFrom" value=""/>
+                <constructor-arg name="servicesTo" value=""/>
+                <constructor-arg name="paramsServiceFrom" value=""/>
+                <constructor-arg name="getParamsServiceTo" value=""/>
     </bean>
 
 </beans>
