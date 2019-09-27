@@ -11,17 +11,17 @@ public class Step {
     private Services servicesFrom;
     private Services servicesTo;
     private Map paramsServiceFrom;
-    private Map getParamsServiceTo;
+    private Map paramsServiceTo;
 
     public Step() {
     }
 
-    public Step(long id, Services servicesFrom, Services servicesTo, Map paramsServiceFrom, Map getParamsServiceTo) {
+    public Step(long id, Services servicesFrom, Services servicesTo, Map paramsServiceFrom, Map paramsServiceTo) {
         this.id = id;
         this.servicesFrom = servicesFrom;
         this.servicesTo = servicesTo;
         this.paramsServiceFrom = paramsServiceFrom;
-        this.getParamsServiceTo = getParamsServiceTo;
+        this.paramsServiceTo = paramsServiceTo;
     }
 
     public long getId() {
@@ -40,8 +40,8 @@ public class Step {
         return paramsServiceFrom;
     }
 
-    public Map getGetParamsServiceTo() {
-        return getParamsServiceTo;
+    public Map getParamsServiceTo() {
+        return paramsServiceTo;
     }
 
     public void setId(long id) {
@@ -60,7 +60,7 @@ public class Step {
         this.paramsServiceFrom = paramsServiceFrom;
     }
 
-    public void setGetParamsServiceTo(Map getParamsServiceTo) {
-        this.getParamsServiceTo = getParamsServiceTo;
+    public void setParamsServiceTo(Map getParamsServiceTo) {
+        this.paramsServiceTo = getParamsServiceTo;
     }
 }

@@ -10,7 +10,7 @@
     <context:component-scan base-package="com"/>
 
     <bean id="orderService" class="com.classwork.OrderService">
-<!--        <constructor-arg name="" value=""/>-->
+        <!--        <constructor-arg name="" value=""/>-->
     </bean>
 
     <bean id="orderDAO" class="com.classwork.OrderDAO">
@@ -18,25 +18,60 @@
     </bean>
 
 
-
+    <!--    private String id;-->
+    <!--    private List steps;-->
 
     <bean id="route" class="com.hw1.Route">
-                <constructor-arg name="id" value=""/>
-                <constructor-arg name="steps" value=""/>
+        <constructor-arg name="id" value="firstStep"/>
+        <constructor-arg name="steps">
+            <list>
+                <value>step1</value>
+                <value>step2</value>
+                <value>step3</value>
+            </list>
+        </constructor-arg>
     </bean>
 
-    <bean id="service" class="com.hw1.Services">
-                <constructor-arg name="id" value=""/>
-                <constructor-arg name="name" value=""/>
-                <constructor-arg name="paramsToCall" value=""/>
+    <!--    private long id;-->
+    <!--    private String name;-->
+    <!--    private List paramsToCall;-->
+
+    <bean id="services" class="com.hw1.Services">
+        <constructor-arg name="id" value="1"/>
+        <constructor-arg name="name" value="firstService"/>
+        <constructor-arg name="paramsToCall">
+            <list>
+                <value>param1</value>
+                <value>param2</value>
+                <value>param3</value>
+            </list>
+        </constructor-arg>
     </bean>
+
+    <!--    private long id;-->
+    <!--    private Services servicesFrom;-->
+    <!--    private Services servicesTo;-->
+    <!--    private Map paramsServiceFrom;-->
+    <!--    private Map paramsServiceTo;-->
+
 
     <bean id="step" class="com.hw1.Step">
-                <constructor-arg name="id" value=""/>
-                <constructor-arg name="servicesFrom" value=""/>
-                <constructor-arg name="servicesTo" value=""/>
-                <constructor-arg name="paramsServiceFrom" value=""/>
-                <constructor-arg name="getParamsServiceTo" value=""/>
+        <constructor-arg name="id" value="1"/>
+        <constructor-arg name="servicesFrom" ref="services"/>
+        <constructor-arg name="servicesTo" ref="services"/>
+        <constructor-arg name="paramsServiceFrom">
+            <map>
+                <entry key="1" value="paramFrom1"/>
+                <entry key="2" value="paramFrom2"/>
+                <entry key="3" value="paramFrom3"/>
+            </map>
+        </constructor-arg>
+        <constructor-arg name="paramsServiceTo">
+            <map>
+                <entry key="1" value="paramTo1"/>
+                <entry key="2" value="paramTo2"/>
+                <entry key="3" value="paramTo3"/>
+            </map>
+        </constructor-arg>
     </bean>
-
 </beans>
