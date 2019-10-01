@@ -74,4 +74,23 @@
             </map>
         </constructor-arg>
     </bean>
+
+    <!--    private long id;-->
+    <!--    private String name;-->
+    <!--    private Date dateCreated;-->
+    <!--    private Date lastUpdatedDate;-->
+    <!--    private String description;-->
+
+    <bean id="item" class="com.hw2.model.Item">
+<!--        <constructor-arg name="id" type="long" value="1"/>-->
+<!--        <constructor-arg name="name" type="java.lang.String" value="Max"/>-->
+<!--        <constructor-arg name="dateCreated" type="java.util.Date" value="dd/MM/yyyy"/>-->
+<!--        <constructor-arg name="lastUpdatedDate" type="java.util.Date" value="dd/MM/yyyy"/>-->
+<!--        <constructor-arg name="description" type="java.lang.String" value="aaa"/>-->
+    </bean>
+
+    <bean id="itemService" class="com.hw2.service.ItemService"/>
+
+    <bean id="itemDAO" class="com.hw2.repo.ItemDAO"/>
+
 </beans>
