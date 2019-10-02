@@ -40,6 +40,14 @@ public class Item {
         this.description = description;
     }
 
+    public Item(long id, String name, Date dateCreated, Date lastUpdateDate, String description) {
+        this.id = id;
+        this.name = name;
+        this.dateCreated = dateCreated;
+        this.lastUpdateDate = lastUpdateDate;
+        this.description = description;
+    }
+
     @Id
     @SequenceGenerator(name = "IT_SEQ", sequenceName = "ITEM_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "IT_SEQ")

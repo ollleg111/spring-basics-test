@@ -15,34 +15,31 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    //TODO
-    Item item = new Item();
-
     @RequestMapping(method = RequestMethod.POST, value = "/save", produces = "text/plain")
     public @ResponseBody
-    String callCreate() throws HibernateException {
+    String callCreate(Item item) throws HibernateException {
         itemService.save(item);
         return "was saving";
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/get", produces = "text/plain")
     public @ResponseBody
-    String callRead() throws HibernateException{
-        itemService.findById(item.getId());
+    String callFind(long id) throws HibernateException {
+        itemService.findById(id);
         return "was getting";
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "text/plain")
     public @ResponseBody
-    String callUpdate() throws HibernateException{
+    String callUpdate(Item item) throws HibernateException {
         itemService.update(item);
         return "was updating";
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete", produces = "text/plain")
     public @ResponseBody
-    String callDelete() throws HibernateException{
-        itemService.delete(item.getId());
+    String callDelete(long id) throws HibernateException {
+        itemService.delete(id);
         return "was deleting";
     }
 
