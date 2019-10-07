@@ -1,13 +1,10 @@
 package com.hw2.model;
 
-import org.springframework.stereotype.Service;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "ITEM")
-//@Service
 public class Item {
 
     /*

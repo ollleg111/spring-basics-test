@@ -4,6 +4,7 @@ import com.hw2.model.Item;
 import com.hw2.service.ItemService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,14 +29,15 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/save")
     public @ResponseBody
-    String callCreate(@RequestParam long id, @RequestParam String name, @RequestParam Date dateCreated,
-                      @RequestParam Date lastUpdateDate, @RequestParam String description)
+    String callCreate(@RequestParam String name,
+                      @RequestParam(value = "date0") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date dateCreated,
+                      @RequestParam(value = "date1") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date lastUpdateDate,
+                      @RequestParam String description)
             throws HibernateException {
-        long idItem = Long.parseLong(String.valueOf(id));
         String idName = String.valueOf(name);
         String des = String.valueOf(description);
 
-        return "The item: " + itemService.save(new Item(idItem, idName, dateCreated, lastUpdateDate, des)) +
+        return "The item: " + itemService.save(new Item(idName, dateCreated, lastUpdateDate, des)) +
                 " was saving";
     }
 
@@ -48,8 +50,11 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update")
     public @ResponseBody
-    String callUpdate(@RequestParam long id, @RequestParam String name, @RequestParam Date dateCreated,
-                      @RequestParam Date lastUpdateDate, @RequestParam String description)
+    String callUpdate(@RequestParam long id,
+                      @RequestParam String name,
+                      @RequestParam(value = "date0") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date dateCreated,
+                      @RequestParam(value = "date1") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date lastUpdateDate,
+                      @RequestParam String description)
             throws HibernateException {
         long idItem = Long.parseLong(String.valueOf(id));
         String idName = String.valueOf(name);
@@ -63,6 +68,6 @@ public class ItemController {
     public @ResponseBody
     String callDelete(@RequestParam long id) throws HibernateException {
         itemService.delete(Long.parseLong(String.valueOf(id)));
-        return "The item: was deleting";
+        return "The item was deleting";
     }
 }
