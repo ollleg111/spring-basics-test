@@ -7,40 +7,62 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
 
 @Controller
 public class ItemController {
 
+    /*
+    private long id;
+    private String name;
+    private Date dateCreated;
+    private Date lastUpdateDate;
+    private String description;
+     */
+
     @Autowired
     private ItemService itemService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/save", produces = "text/plain")
+    @RequestMapping(method = RequestMethod.POST, value = "/save")
     public @ResponseBody
-    String callCreate(Item item) throws HibernateException {
-        itemService.save(item);
-        return "was saving";
+    String callCreate(@RequestParam long id, @RequestParam String name, @RequestParam Date dateCreated,
+                      @RequestParam Date lastUpdateDate, @RequestParam String description)
+            throws HibernateException {
+        long idItem = Long.parseLong(String.valueOf(id));
+        String idName = String.valueOf(name);
+        String des = String.valueOf(description);
+
+        return "The item: " + itemService.save(new Item(idItem, idName, dateCreated, lastUpdateDate, des)) +
+                " was saving";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get", produces = "text/plain")
+    @RequestMapping(method = RequestMethod.GET, value = "/get")
     public @ResponseBody
-    String callFind(long id) throws HibernateException {
-        itemService.findById(id);
-        return "was getting";
+    String callFind(@RequestParam long id) throws HibernateException {
+        return "The item: " + itemService.findById(Long.parseLong(String.valueOf(id))).toString() +
+                " was getting";
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/update", produces = "text/plain")
+    @RequestMapping(method = RequestMethod.PUT, value = "/update")
     public @ResponseBody
-    String callUpdate(Item item) throws HibernateException {
-        itemService.update(item);
-        return "was updating";
+    String callUpdate(@RequestParam long id, @RequestParam String name, @RequestParam Date dateCreated,
+                      @RequestParam Date lastUpdateDate, @RequestParam String description)
+            throws HibernateException {
+        long idItem = Long.parseLong(String.valueOf(id));
+        String idName = String.valueOf(name);
+        String des = String.valueOf(description);
+
+        return "The item: " + itemService.save(new Item(idItem, idName, dateCreated, lastUpdateDate, des)) +
+                " was updating";
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete", produces = "text/plain")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
     public @ResponseBody
-    String callDelete(long id) throws HibernateException {
-        itemService.delete(id);
-        return "was deleting";
+    String callDelete(@RequestParam long id) throws HibernateException {
+        itemService.delete(Long.parseLong(String.valueOf(id)));
+        return "The item: was deleting";
     }
-
 }

@@ -89,8 +89,10 @@
 <!--        <constructor-arg name="description" type="java.lang.String" value="aaa"/>-->
     </bean>
 
-    <bean id="itemService" class="com.hw2.service.ItemService"/>
+<!--    <bean id="itemService" class="com.hw2.service.ItemService"/>-->
 
-    <bean id="itemDAO" class="com.hw2.repo.ItemDAO"/>
+<!--    <bean id="itemDAO" class="com.hw2.repo.ItemDAO"/>-->
+
+
 
 </beans>
