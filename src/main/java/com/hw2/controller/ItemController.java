@@ -29,17 +29,17 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/save")
     public @ResponseBody
-    String callCreate(@RequestParam long id,
+    String callCreate(/*@RequestParam long id,*/
                       @RequestParam String name,
                       @RequestParam(value = "date0") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date dateCreated,
                       @RequestParam(value = "date1") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date lastUpdateDate,
                       @RequestParam String description)
             throws HibernateException {
-        long itemId = Long.parseLong(String.valueOf(id));
+        /*long itemId = Long.parseLong(String.valueOf(id));*/
         String itemName = String.valueOf(name);
         String des = String.valueOf(description);
 
-        return "The item: " + itemService.save(new Item(itemId, itemName, dateCreated, lastUpdateDate, des)) +
+        return "The item: " + itemService.save(new Item(itemName, dateCreated, lastUpdateDate, des)) +
                 " was saving";
     }
 
