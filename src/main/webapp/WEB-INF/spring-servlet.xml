@@ -81,18 +81,31 @@
     <!--    private Date lastUpdatedDate;-->
     <!--    private String description;-->
 
+    <bean id="dateFormatter" class="java.text.SimpleDateFormat">
+        <constructor-arg value="dd-MM-yyyy HH:mm:ss" />
+    </bean>
+
     <bean id="item" class="com.hw2.model.Item">
 <!--        <constructor-arg name="id" type="long" value="1"/>-->
 <!--        <constructor-arg name="name" type="java.lang.String" value="Max"/>-->
 <!--        <constructor-arg name="dateCreated" type="java.util.Date" value="dd/MM/yyyy"/>-->
 <!--        <constructor-arg name="lastUpdateDate" type="java.util.Date" value="dd/MM/yyyy"/>-->
 <!--        <constructor-arg name="description" type="java.lang.String" value="aaa"/>-->
+        <property name="id" value="1"/>
+        <property name="name" value="Max"/>
+        <property name="dateCreated">
+            <bean factory-bean="dateFormatter" factory-method="parse">
+                <constructor-arg value="30-12-2019 12:00:00"/>
+            </bean>
+        </property>
+        <property name="lastUpdateDate">
+            <bean factory-bean="dateFormatter" factory-method="parse">
+                <constructor-arg value="01-01-2020 12:00:00"/>
+            </bean>
+        </property>
+        <property name="description" value="good job"/>
     </bean>
 
 <!--    <bean id="itemService" class="com.hw2.service.ItemService"/>-->
-
 <!--    <bean id="itemDAO" class="com.hw2.repo.ItemDAO"/>-->
-
-
-
 </beans>

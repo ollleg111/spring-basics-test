@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
@@ -29,15 +31,17 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/save")
     public @ResponseBody
-    String callCreate(@RequestParam String name,
+    String callCreate(@RequestParam long id,
+                      @RequestParam String name,
                       @RequestParam(value = "date0") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date dateCreated,
                       @RequestParam(value = "date1") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date lastUpdateDate,
                       @RequestParam String description)
             throws HibernateException {
-        String idName = String.valueOf(name);
+        long itemId = Long.parseLong(String.valueOf(id));
+        String itemName = String.valueOf(name);
         String des = String.valueOf(description);
 
-        return "The item: " + itemService.save(new Item(idName, dateCreated, lastUpdateDate, des)) +
+        return "The item: " + itemService.save(new Item(itemId, itemName, dateCreated, lastUpdateDate, des)) +
                 " was saving";
     }
 
@@ -56,11 +60,11 @@ public class ItemController {
                       @RequestParam(value = "date1") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date lastUpdateDate,
                       @RequestParam String description)
             throws HibernateException {
-        long idItem = Long.parseLong(String.valueOf(id));
-        String idName = String.valueOf(name);
+        long itemId = Long.parseLong(String.valueOf(id));
+        String itemName = String.valueOf(name);
         String des = String.valueOf(description);
 
-        return "The item: " + itemService.save(new Item(idItem, idName, dateCreated, lastUpdateDate, des)) +
+        return "The item: " + itemService.update(new Item(itemId, itemName, dateCreated, lastUpdateDate, des)) +
                 " was updating";
     }
 
