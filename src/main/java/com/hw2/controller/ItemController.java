@@ -3,13 +3,14 @@ package com.hw2.controller;
 import com.hw2.model.Item;
 import com.hw2.service.ItemService;
 import org.hibernate.HibernateException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -26,8 +27,29 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+    /*
+    https://www.leveluplunch.com/java/tutorials/014-post-json-to-spring-rest-webservice/
+     */
 
-    @RequestMapping(method = RequestMethod.POST, value = "/save")
+    @RequestMapping(method = RequestMethod.POST,
+            value = "/save",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Item save(@RequestBody Item item) {
+        System.out.println("from json input : " + item.getId() + " : " + item.getName());
+        itemService.save(item);
+        return item;
+    }
+
+//    @RequestMapping(method = RequestMethod.POST,
+//            value = "/save",
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Item> callCreate(@RequestBody Item item) {
+//        return new ResponseEntity<>(itemService.save(item), HttpStatus.OK);
+//    }
+
+    /*
+     @RequestMapping(method = RequestMethod.POST, value = "/save")
     public @ResponseBody
     String callCreate(@RequestParam(value = "name") String name,
                       @RequestParam(value = "date0") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date dateCreated,
@@ -38,9 +60,11 @@ public class ItemController {
         String des = String.valueOf(description);
         return "The item: " + itemService.save(new Item(itemName, dateCreated, lastUpdateDate, des)) +
                 " was saving";
+            }
+     */
+
 //        http://localhost:8080/save?name=abcdef&date0=04-OCT-19 08:58:47&date1=05-OCT-19 08:58:52&description=asdssddds
-//        The item: Item{id=1, name='abcdef', dateCreated=Fri Oct 04 08:58:47 EEST 2019, lastUpdateDate=Sat Oct 05 08:58:52 EEST 2019, description='asdssddds'} was saving
-    }
+
 
     @RequestMapping(method = RequestMethod.GET, value = "/get")
     public @ResponseBody
@@ -49,20 +73,11 @@ public class ItemController {
                 " was getting";
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/update")
-    public @ResponseBody
-    String callUpdate(@RequestParam(value = "id") long id,
-                      @RequestParam(value = "name") String name,
-                      @RequestParam(value = "date0") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date dateCreated,
-                      @RequestParam(value = "date1") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") Date lastUpdateDate,
-                      @RequestParam(value = "description") String description)
-            throws HibernateException {
-        long itemId = Long.parseLong(String.valueOf(id));
-        String itemName = String.valueOf(name);
-        String des = String.valueOf(description);
-
-        return "The item: " + itemService.update(new Item(itemId, itemName, dateCreated, lastUpdateDate, des)) +
-                " was updating";
+    @RequestMapping(method = RequestMethod.PUT,
+            value = "/update",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Item> callUpdate(@RequestBody Item item) {
+        return new ResponseEntity<>(itemService.update(item), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
