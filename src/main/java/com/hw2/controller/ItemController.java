@@ -86,7 +86,8 @@ public class ItemController {
 //        http://localhost:8080/save?name=abcdef&date0=04-OCT-19 08:58:47&date1=05-OCT-19 08:58:52&description=asdssddds
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/get")
+    @RequestMapping(method = RequestMethod.GET,
+            value = "/get")
     public @ResponseBody
     String callFind(@RequestParam long id) throws HibernateException {
         return "The item: " + itemService.findById(Long.parseLong(String.valueOf(id))).toString() +
@@ -106,7 +107,8 @@ public class ItemController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
+    @RequestMapping(method = RequestMethod.DELETE,
+            value = "/delete")
     public @ResponseBody
     String callDelete(@RequestParam long id) throws HibernateException {
         itemService.delete(Long.parseLong(String.valueOf(id)));
