@@ -1,18 +1,17 @@
 package com.hw2.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hw2.model.Item;
 import com.hw2.service.ItemService;
 import org.hibernate.HibernateException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.io.InputStream;
 
 @Controller
 public class ItemController {
@@ -33,13 +32,34 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.POST,
             value = "/save",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Item save(@RequestBody Item item) {
-        System.out.println("from json input : " + item.getId() + " : " + item.getName());
-        itemService.save(item);
-        return item;
+            produces = "text/plan")
+    public @ResponseBody
+    String callSave(InputStream data) throws HibernateException {
+        try {
+            Item item = itemService.save(new ObjectMapper().readValue(data, Item.class));
+            return "Item with id: " + item.getId() + " was saved";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
+//TODO json data for Postman
+    /*
+    {
+  "name":"jbjbjbjb",
+  "dateCreated":"2018-09-29T18:46:19-0700",
+  "lastUpdateDate":"2021-09-29T18:46:19-0700",
+  "description":"test"
+}
+     */
+
+//    @RequestMapping(method = RequestMethod.POST,
+//            value = "/save",
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Item save(@RequestBody Item item) throws HibernateException {
+//        System.out.println("from json input : " + item.getId() + " : " + item.getName());
+//        itemService.save(item);
+//        return item;
+//    }
 
 //    @RequestMapping(method = RequestMethod.POST,
 //            value = "/save",
@@ -62,7 +82,7 @@ public class ItemController {
                 " was saving";
             }
      */
-
+//        TODO работает через Params в постмене
 //        http://localhost:8080/save?name=abcdef&date0=04-OCT-19 08:58:47&date1=05-OCT-19 08:58:52&description=asdssddds
 
 
@@ -75,9 +95,15 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.PUT,
             value = "/update",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Item> callUpdate(@RequestBody Item item) {
-        return new ResponseEntity<>(itemService.update(item), HttpStatus.OK);
+            produces = "text/plan")
+    public @ResponseBody
+    String callUpdate(InputStream data) throws HibernateException {
+        try {
+            return "Item with id: " + itemService.update(new ObjectMapper().readValue(data, Item.class)).getId()
+                    + " was updated";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete")
