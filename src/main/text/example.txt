@@ -1,8 +1,8 @@
-package com.hw2.controller;
+package com.lesson2.hw2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hw2.model.Item;
-import com.hw2.service.ItemService;
+import com.lesson2.hw2.model.Item;
+import com.lesson2.hw2.service.ItemService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

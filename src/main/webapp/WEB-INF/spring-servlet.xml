@@ -9,11 +9,11 @@
 
     <context:component-scan base-package="com"/>
 
-    <bean id="orderService" class="com.classwork.OrderService">
+    <bean id="orderService" class="com.lesson2.classwork.OrderService">
         <!--        <constructor-arg name="" value=""/>-->
     </bean>
 
-    <bean id="orderDAO" class="com.classwork.OrderDAO">
+    <bean id="orderDAO" class="com.lesson2.classwork.OrderDAO">
         <!--        <constructor-arg name="" value=""/>-->
     </bean>
 
@@ -21,7 +21,7 @@
     <!--    private String id;-->
     <!--    private List steps;-->
 
-    <bean id="route" class="com.hw1.Route">
+    <bean id="route" class="com.lesson2.hw1.Route">
         <constructor-arg name="id" value="firstStep"/>
         <constructor-arg name="steps">
             <list>
@@ -36,7 +36,7 @@
     <!--    private String name;-->
     <!--    private List paramsToCall;-->
 
-    <bean id="services" class="com.hw1.Services">
+    <bean id="services" class="com.lesson2.hw1.Services">
         <constructor-arg name="id" value="1"/>
         <constructor-arg name="name" value="firstService"/>
         <constructor-arg name="paramsToCall">
@@ -55,7 +55,7 @@
     <!--    private Map paramsServiceTo;-->
 
 
-    <bean id="step" class="com.hw1.Step">
+    <bean id="step" class="com.lesson2.hw1.Step">
         <constructor-arg name="id" value="1"/>
         <constructor-arg name="servicesFrom" ref="services"/>
         <constructor-arg name="servicesTo" ref="services"/>
@@ -85,7 +85,7 @@
 <!--        <constructor-arg value="dd-MM-yyyy HH:mm:ss" />-->
 <!--    </bean>-->
 
-    <bean id="item" class="com.hw2.model.Item"/>
+    <bean id="item" class="com.lesson2.hw2.model.Item"/>
 <!--        <property name="id" value="1"/>-->
 <!--        <property name="name" value="Max"/>-->
 <!--        <property name="dateCreated">-->
@@ -107,6 +107,6 @@
     <!--        <constructor-arg name="lastUpdateDate" type="java.util.Date" value="dd/MM/yyyy"/>-->
     <!--        <constructor-arg name="description" type="java.lang.String" value="aaa"/>-->
 
-<!--    <bean id="itemService" class="com.hw2.service.ItemService"/>-->
-<!--    <bean id="itemDAO" class="com.hw2.repo.ItemDAO"/>-->
+<!--    <bean id="itemService" class="com.lesson2.hw2.service.ItemService"/>-->
+<!--    <bean id="itemDAO" class="com.lesson2.hw2.repo.ItemDAO"/>-->
 </beans>
