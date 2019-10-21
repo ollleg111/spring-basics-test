@@ -1,4 +1,4 @@
-package com.lesson3.hw3.model;
+package com.lesson3.hw3.file_strorage.model;
 
 public class File {
     private long id;

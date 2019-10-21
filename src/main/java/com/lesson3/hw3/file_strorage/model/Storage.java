@@ -1,4 +1,4 @@
-package com.lesson3.hw3.model;
+package com.lesson3.hw3.file_strorage.model;
 
 import java.util.Arrays;
 
@@ -11,14 +11,14 @@ public class Storage {
     public Storage() {
     }
 
-    public Storage(long id, String[] formatSupported, String storageCountry, long storageSize) {
-        this.id = id;
+    public Storage(String[] formatSupported, String storageCountry, long storageSize) {
         this.formatSupported = formatSupported;
         this.storageCountry = storageCountry;
         this.storageSize = storageSize;
     }
 
-    public Storage(String[] formatSupported, String storageCountry, long storageSize) {
+    public Storage(long id, String[] formatSupported, String storageCountry, long storageSize) {
+        this.id = id;
         this.formatSupported = formatSupported;
         this.storageCountry = storageCountry;
         this.storageSize = storageSize;
