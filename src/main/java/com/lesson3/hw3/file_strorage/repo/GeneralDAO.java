@@ -1,26 +1,24 @@
 package com.lesson3.hw3.file_strorage.repo;
 
-import com.lesson3.hw3.file_strorage.config.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
 
-abstract class GeneralDAO<T> {
+public class GeneralDAO<T> {
 
-    private Class typeClass;
-    private HibernateUtil hibernateUtil;
+    private Class<T> typeParameterClass;
+    private static SessionFactory sessionFactory;
 
-    void setTypeClass(Class typeClass) {
-        this.typeClass = typeClass;
-    }
-    void setHibernateUtil(HibernateUtil hibernateUtil) {
-        this.hibernateUtil = hibernateUtil;
+    void setTypeClass(Class<T> typeParameterClass) {
+        this.typeParameterClass = typeParameterClass;
     }
 
     T save(T t) throws HibernateException {
         Transaction tr = null;
-        try (Session session = hibernateUtil.startSession()) {
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
 
@@ -34,7 +32,7 @@ abstract class GeneralDAO<T> {
             if (tr != null)
                 tr.rollback();
             throw new HibernateException("the method save(T t) was failed in class "
-                    + t.getClass().getName());
+                    + typeParameterClass.getName());
         }
         System.out.println("Entity " + t.getClass().getName() + " was saving");
         return t;
@@ -42,7 +40,7 @@ abstract class GeneralDAO<T> {
 
     T update(T t) throws HibernateException {
         Transaction tr = null;
-        try (Session session = hibernateUtil.startSession()) {
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
 
@@ -56,7 +54,7 @@ abstract class GeneralDAO<T> {
             if (tr != null)
                 tr.rollback();
             throw new HibernateException("the method update(T t) was failed in class "
-                    + t.getClass().getName());
+                    + typeParameterClass.getName());
         }
         System.out.println("Entity  " + t.getClass().getName() + " updated");
         return t;
@@ -64,12 +62,12 @@ abstract class GeneralDAO<T> {
 
     void delete(long id, String deleteString) throws HibernateException {
         Transaction tr = null;
-        try (Session session = hibernateUtil.startSession()) {
+        try (Session session = createSessionFactory().openSession()) {
             tr = session.getTransaction();
             tr.begin();
 
             NativeQuery nativeQuery = session.createNativeQuery(deleteString);
-            nativeQuery.addEntity(typeClass);
+            nativeQuery.addEntity(typeParameterClass);
             nativeQuery.setParameter("id", id);
 
             nativeQuery.executeUpdate();
@@ -81,18 +79,25 @@ abstract class GeneralDAO<T> {
 
             if (tr != null)
                 tr.rollback();
-            throw new HibernateException("the method delete(long id) was failed");
+            throw new HibernateException("the method delete(long id) was failed in class "
+                    + typeParameterClass.getName());
         }
         System.out.println("Entity with id:" + id + " was deleted");
     }
 
-    @SuppressWarnings("unchecked")
     T findById(long id) throws HibernateException {
-        try (Session session = hibernateUtil.startSession()) {
-            return (T) session.get(typeClass, id);
+        try (Session session = createSessionFactory().openSession()) {
+            return session.get(typeParameterClass, id);
         } catch (HibernateException e) {
             throw new HibernateException("operation with id: " + id
                     + " was filed in method findById(long id)");
         }
+    }
+
+    private static SessionFactory createSessionFactory() {
+        if (sessionFactory == null) {
+            sessionFactory = new Configuration().configure().buildSessionFactory();
+        }
+        return sessionFactory;
     }
 }

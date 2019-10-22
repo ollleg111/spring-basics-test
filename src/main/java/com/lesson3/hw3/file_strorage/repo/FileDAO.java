@@ -2,28 +2,24 @@ package com.lesson3.hw3.file_strorage.repo;
 
 import com.lesson3.hw3.file_strorage.constants.Constants;
 import com.lesson3.hw3.file_strorage.model.File;
-import com.lesson3.hw3.file_strorage.config.HibernateUtil;
 import org.hibernate.HibernateException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class FileDAO extends GeneralDAO<File> {
 
-    @Autowired
-    public FileDAO(HibernateUtil hibernateUtil) {
+    public FileDAO() {
         setTypeClass(File.class);
-        setHibernateUtil(hibernateUtil);
     }
 
     @Override
-    public File save(File o) throws HibernateException {
-        return super.save(o);
+    public File save(File file) throws HibernateException {
+        return super.save(file);
     }
 
     @Override
-    public File update(File o) throws HibernateException {
-        return super.update(o);
+    public File update(File file) throws HibernateException {
+        return super.update(file);
     }
 
     public void delete(long id) throws HibernateException {
@@ -34,4 +30,13 @@ public class FileDAO extends GeneralDAO<File> {
     public File findById(long id) throws HibernateException {
         return super.findById(id);
     }
+
+//    public List<File> filesList(long id) throws HibernateException{
+//        try (Session session = hibernateUtil.startSession()) {
+//            return (T) session.get(typeClass, id);
+//        } catch (HibernateException e) {
+//            throw new HibernateException("operation with id: " + id
+//                    + " was filed in method findById(long id)");
+//        }
+//    }
 }

@@ -1,5 +1,6 @@
 package com.lesson3.hw3.file_strorage.service;
 
+import com.lesson3.hw3.file_strorage.exceptions.BadRequestException;
 import com.lesson3.hw3.file_strorage.model.File;
 import com.lesson3.hw3.file_strorage.model.Storage;
 import com.lesson3.hw3.file_strorage.repo.StorageDAO;
@@ -28,8 +29,10 @@ public class StorageService {
         storageDAO.delete(id);
     }
 
-    public Storage findById(long id) throws HibernateException {
-        return storageDAO.findById(id);
+    public Storage findById(long id) throws Exception {
+        Storage storage = storageDAO.findById(id);
+        if (storage == null) throw new BadRequestException("Storage with id: " + id + " do not exist");
+        return storage;
     }
 
     public void put(Storage storage, File file) throws Exception {

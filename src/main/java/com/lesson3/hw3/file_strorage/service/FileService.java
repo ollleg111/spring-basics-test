@@ -1,5 +1,6 @@
 package com.lesson3.hw3.file_strorage.service;
 
+import com.lesson3.hw3.file_strorage.exceptions.BadRequestException;
 import com.lesson3.hw3.file_strorage.model.File;
 import com.lesson3.hw3.file_strorage.repo.FileDAO;
 import org.hibernate.HibernateException;
@@ -27,7 +28,9 @@ public class FileService {
         fileDAO.delete(id);
     }
 
-    public File findById(long id) throws HibernateException {
-        return fileDAO.findById(id);
+    public File findById(long id) throws Exception {
+        File file = fileDAO.findById(id);
+        if (file == null) throw new BadRequestException("File with id: " + id + " do not exist");
+        return file;
     }
 }

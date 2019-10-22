@@ -68,6 +68,15 @@ public class Storage {
         this.storageSize = storageSize;
     }
 
+    public String supportingFormatToString(){
+        String str = Arrays.toString(formatSupported);
+        return str.substring(1, str.length() -1);
+    }
+
+//    public String supportingFormatToArray(){
+//        return formatSupported.s
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

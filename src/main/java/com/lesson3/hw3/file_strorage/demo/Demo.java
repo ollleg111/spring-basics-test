@@ -1,6 +1,5 @@
 package com.lesson3.hw3.file_strorage.demo;
 
-import com.lesson3.hw3.file_strorage.config.HibernateUtil;
 import com.lesson3.hw3.file_strorage.controller.MainController;
 import com.lesson3.hw3.file_strorage.model.File;
 import com.lesson3.hw3.file_strorage.model.Storage;
@@ -12,8 +11,8 @@ import com.lesson3.hw3.file_strorage.service.StorageService;
 public class Demo {
 
     private static MainController mainController = new MainController(
-            new FileService(new FileDAO(new HibernateUtil())),
-            new StorageService(new StorageDAO(new HibernateUtil())));
+            new FileService(new FileDAO()),
+            new StorageService(new StorageDAO()));
 
     public static void main(String[] args) {
 
@@ -26,9 +25,9 @@ public class Demo {
         mainController.saveFile(file1);
         mainController.saveFile(file2);
 
-        Storage storage0 = new Storage(new String[]{"txt","jpg","mp3"},"UA",1000);
-        Storage storage1 = new Storage(new String[]{"txt","jpg","mp3"},"UK",1000);
-        Storage storage2 = new Storage(new String[]{"txt","jpg","mp3"},"US",1000);
+        Storage storage0 = new Storage(new String[]{"txt", "jpg", "mp3"}, "UA", 1000);
+        Storage storage1 = new Storage(new String[]{"txt", "jpg", "mp3"}, "UK", 1000);
+        Storage storage2 = new Storage(new String[]{"txt", "jpg", "mp3"}, "US", 1000);
 
         mainController.saveStorage(storage0);
         mainController.saveStorage(storage1);
@@ -43,12 +42,32 @@ public class Demo {
         storage2.setId(102);
 
         try {
-            mainController.put(storage0,file0);
-            mainController.put(storage0,file1);
-            mainController.put(storage0,file2);
-
-        }catch (Exception e){
-            e.getMessage();
+            mainController.put(storage0, file0);
+            mainController.put(storage0, file1);
+            mainController.put(storage0, file2);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+//        //----------------------------------------------------
+//
+//        try {
+//            mainController.transferAll(storage0, storage1);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        //----------------------------------------------------
+//
+//        try {
+//            mainController.transferFile(storage0, storage2, 1);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        //----------------------------------------------------
+//
+//        try {
+//            mainController.delete(storage0, file0);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }
