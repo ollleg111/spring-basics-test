@@ -3,7 +3,9 @@ package com.lesson3.hw3.file_strorage.config;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HibernateUtil {
     private SessionFactory sessionFactory;
 

@@ -34,5 +34,4 @@ public class StorageDAO extends GeneralDAO<Storage> {
     public Storage findById(long id) throws HibernateException {
         return super.findById(id);
     }
-
 }

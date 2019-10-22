@@ -86,6 +86,7 @@ abstract class GeneralDAO<T> {
         System.out.println("Entity with id:" + id + " was deleted");
     }
 
+    @SuppressWarnings("unchecked")
     T findById(long id) throws HibernateException {
         try (Session session = hibernateUtil.startSession()) {
             return (T) session.get(typeClass, id);
