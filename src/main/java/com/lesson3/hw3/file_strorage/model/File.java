@@ -1,6 +1,7 @@
 package com.lesson3.hw3.file_strorage.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /*
 CREATE TABLE FILES(
@@ -89,7 +90,7 @@ public class File {
         File file = (File) o;
 
         if (id != file.id) return false;
-        return name != null ? name.equals(file.name) : file.name == null;
+        return Objects.equals(name, file.name);
     }
 
     @Override

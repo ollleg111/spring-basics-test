@@ -16,7 +16,16 @@ public class FileService {
         this.fileDAO = fileDAO;
     }
 
+    /*
+    Имя файла не может быть больше 10 символов, то есть файл с таким именем не может быть создан
+     */
     public File save(File file) throws HibernateException {
+        if (file.getName().length() > 10)
+            throw new BadRequestException("The name of file: " + file.getName() +
+                    "is too large. Try to write smaller file's name. in method " +
+                    "save(File file) from class " +
+                    FileService.class.getName());
+
         return fileDAO.save(file);
     }
 
@@ -28,9 +37,14 @@ public class FileService {
         fileDAO.delete(id);
     }
 
-    public File findById(long id) throws Exception {
+    /*
+    Проверка наличия нужного файла по id
+     */
+    public File findById(long id) throws RuntimeException {
         File file = fileDAO.findById(id);
-        if (file == null) throw new BadRequestException("File with id: " + id + " do not exist");
+        if (file == null) throw new BadRequestException("File with id: " + id +
+                " does not exist in method findById(long id) from class " +
+                FileService.class.getName());
         return file;
     }
 }

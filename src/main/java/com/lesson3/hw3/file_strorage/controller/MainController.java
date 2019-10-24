@@ -57,7 +57,7 @@ public class MainController {
         fileService.delete(id);
     }
 
-    public File findFileById(long id) throws Exception {
+    public File findFileById(long id) throws RuntimeException {
         return fileService.findById(id);
     }
 
@@ -77,7 +77,7 @@ public class MainController {
         storageService.delete(id);
     }
 
-    public Storage findStorageById(long id) throws Exception {
+    public Storage findStorageById(long id) throws RuntimeException {
         return storageService.findById(id);
     }
 }

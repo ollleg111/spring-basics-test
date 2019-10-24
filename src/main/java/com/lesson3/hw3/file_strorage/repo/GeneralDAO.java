@@ -1,24 +1,27 @@
 package com.lesson3.hw3.file_strorage.repo;
 
+import com.lesson3.hw3.file_strorage.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 public class GeneralDAO<T> {
 
     private Class<T> typeParameterClass;
-    private static SessionFactory sessionFactory;
+    private HibernateUtil hibernateUtil;
 
     void setTypeClass(Class<T> typeParameterClass) {
         this.typeParameterClass = typeParameterClass;
     }
 
+    void setHibernateUtil(HibernateUtil hibernateUtil) {
+        this.hibernateUtil = hibernateUtil;
+    }
+
     T save(T t) throws HibernateException {
         Transaction tr = null;
-        try (Session session = createSessionFactory().openSession()) {
+        try (Session session = hibernateUtil.openSession()) {
             tr = session.getTransaction();
             tr.begin();
 
@@ -26,12 +29,12 @@ public class GeneralDAO<T> {
 
             tr.commit();
         } catch (HibernateException e) {
-            System.err.println("save is failed");
+            System.err.println("Save is failed");
             System.err.println(e.getMessage());
 
             if (tr != null)
                 tr.rollback();
-            throw new HibernateException("the method save(T t) was failed in class "
+            throw new HibernateException("The method save(T t) was failed in class "
                     + typeParameterClass.getName());
         }
         System.out.println("Entity " + t.getClass().getName() + " was saving");
@@ -40,7 +43,7 @@ public class GeneralDAO<T> {
 
     T update(T t) throws HibernateException {
         Transaction tr = null;
-        try (Session session = createSessionFactory().openSession()) {
+        try (Session session = hibernateUtil.openSession()) {
             tr = session.getTransaction();
             tr.begin();
 
@@ -48,12 +51,12 @@ public class GeneralDAO<T> {
 
             tr.commit();
         } catch (HibernateException e) {
-            System.err.println("update is failed");
+            System.err.println("Update is failed");
             System.err.println(e.getMessage());
 
             if (tr != null)
                 tr.rollback();
-            throw new HibernateException("the method update(T t) was failed in class "
+            throw new HibernateException("The method update(T t) was failed in class "
                     + typeParameterClass.getName());
         }
         System.out.println("Entity  " + t.getClass().getName() + " updated");
@@ -62,42 +65,35 @@ public class GeneralDAO<T> {
 
     void delete(long id, String deleteString) throws HibernateException {
         Transaction tr = null;
-        try (Session session = createSessionFactory().openSession()) {
+        try (Session session = hibernateUtil.openSession()) {
             tr = session.getTransaction();
             tr.begin();
 
-            NativeQuery nativeQuery = session.createNativeQuery(deleteString);
-            nativeQuery.addEntity(typeParameterClass);
-            nativeQuery.setParameter("id", id);
+            Query query = session.createQuery(deleteString, typeParameterClass);
+            query.setParameter("id", id);
 
-            nativeQuery.executeUpdate();
+            query.executeUpdate();
 
             tr.commit();
         } catch (HibernateException e) {
-            System.err.println("delete is failed");
+            System.err.println("Delete is failed");
             System.err.println(e.getMessage());
 
             if (tr != null)
                 tr.rollback();
-            throw new HibernateException("the method delete(long id) was failed in class "
+            throw new HibernateException("The method delete(long id) was failed in class "
                     + typeParameterClass.getName());
         }
         System.out.println("Entity with id:" + id + " was deleted");
     }
 
     T findById(long id) throws HibernateException {
-        try (Session session = createSessionFactory().openSession()) {
+        try (Session session = hibernateUtil.openSession()) {
             return session.get(typeParameterClass, id);
         } catch (HibernateException e) {
-            throw new HibernateException("operation with id: " + id
-                    + " was filed in method findById(long id)");
+            throw new HibernateException("Operation with id: " + id
+                    + " was filed in method findById(long id) from class " +
+                    typeParameterClass.getName());
         }
-    }
-
-    private static SessionFactory createSessionFactory() {
-        if (sessionFactory == null) {
-            sessionFactory = new Configuration().configure().buildSessionFactory();
-        }
-        return sessionFactory;
     }
 }

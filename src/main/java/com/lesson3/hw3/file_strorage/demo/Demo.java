@@ -1,5 +1,6 @@
 package com.lesson3.hw3.file_strorage.demo;
 
+import com.lesson3.hw3.file_strorage.util.HibernateUtil;
 import com.lesson3.hw3.file_strorage.controller.MainController;
 import com.lesson3.hw3.file_strorage.model.File;
 import com.lesson3.hw3.file_strorage.model.Storage;
@@ -11,11 +12,13 @@ import com.lesson3.hw3.file_strorage.service.StorageService;
 public class Demo {
 
     private static MainController mainController = new MainController(
-            new FileService(new FileDAO()),
-            new StorageService(new StorageDAO()));
+            new FileService(
+                    new FileDAO(new HibernateUtil())),
+            new StorageService(
+                    new StorageDAO(new HibernateUtil()),
+                    new FileDAO(new HibernateUtil())));
 
     public static void main(String[] args) {
-
 
         File file0 = new File("aaa", "txt", 50, null);
         File file1 = new File("bbb", "mp3", 150, null);
@@ -43,8 +46,8 @@ public class Demo {
 
         try {
             mainController.put(storage0, file0);
-            mainController.put(storage0, file1);
-            mainController.put(storage0, file2);
+//            mainController.put(storage0, file1);
+//            mainController.put(storage0, file2);
         } catch (Exception e) {
             e.printStackTrace();
         }
