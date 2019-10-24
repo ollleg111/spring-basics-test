@@ -3,7 +3,9 @@ package com.lesson3.hw3.file_strorage.controller;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lesson3.hw3.file_strorage.model.File;
 import com.lesson3.hw3.file_strorage.model.Storage;
+import com.lesson3.hw3.file_strorage.service.FileService;
 import com.lesson3.hw3.file_strorage.service.StorageService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,13 @@ import java.io.InputStream;
 
 public class StorageController {
     private StorageService storageService;
+    private FileService fileService;
     private Storage storage;
 
     @Autowired
-    public StorageController(StorageService storageService) {
+    public StorageController(StorageService storageService, FileService fileService) {
         this.storageService = storageService;
+        this.fileService = fileService;
     }
 
     @RequestMapping(method = RequestMethod.POST,
@@ -94,5 +98,28 @@ public class StorageController {
         } catch (IOException e) {
             return e.getMessage();
         }
+    }
+
+    /*
+    put(Storage storage, File file) - добавляет файл в хранилище. гарантируется что файл уже есть в условной БД
+    delete(Storage storage, File file)
+    transferAll(Storage storageFrom, Storage storageTo) - трансфер всех файлов
+    transferFile(Storage storageFrom, Storage storageTo, long id) - трансфер файла с хранилища storageFrom по его айди
+     */
+
+    public void put(Storage storage, File file) throws Exception {
+        storageService.put(storage, file);
+    }
+
+    public void delete(Storage storage, File file) throws Exception {
+        storageService.delete(storage, file);
+    }
+
+    public void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
+        storageService.transferAll(storageFrom, storageTo);
+    }
+
+    public void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
+        storageService.transferFile(storageFrom, storageTo, id);
     }
 }
