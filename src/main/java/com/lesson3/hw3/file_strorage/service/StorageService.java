@@ -85,6 +85,7 @@ public class StorageService {
             throw new BadRequestException("Do not have needed amount in storageTo in method " +
                     "transferFile(Storage storageFrom, Storage storageTo, long id) " +
                     StorageService.class.getName());
+
         File file = fileDAO.findById(id);
         file.setStorage(storageTo);
         fileDAO.update(file);
