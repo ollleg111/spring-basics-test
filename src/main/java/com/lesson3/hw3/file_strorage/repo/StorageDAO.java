@@ -64,8 +64,21 @@ public class StorageDAO extends GeneralDAO<Storage> {
 
             return query.list();
         } catch (HibernateException e) {
-            throw new HibernateException("Operation with id: " + storageId
+            throw new HibernateException("Operation with storage with id: " + storageId
                     + " was filed in method filesList(long id) from class " + StorageDAO.class.getName());
+        }
+    }
+
+    public long getFileSize(long id) throws HibernateException {
+        try (Session session = hibernateUtil.openSession()) {
+
+            Query<Long> query = session.createQuery(Constants.FILE_SIZE_REQUEST, Long.class);
+            query.setParameter("id", id);
+
+            return query.getSingleResult();
+        } catch (HibernateException e) {
+            throw new HibernateException("Operation with file  with id: " + id
+                    + " was filed in method getFileSize(long id) from class " + StorageDAO.class.getName());
         }
     }
 }

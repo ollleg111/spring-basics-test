@@ -80,7 +80,7 @@ public class StorageService {
     }
 
     public void transferFile(Storage storageFrom, Storage storageTo, long id) throws BadRequestException {
-        if ((storageDAO.getStorageAmount(storageTo) + fileDAO.findById(id).getSize()) >
+        if ((storageDAO.getStorageAmount(storageTo) + storageDAO.getFileSize(id)) >
                 storageDAO.getStorageAmount(storageFrom))
             throw new BadRequestException("Do not have needed amount in storageTo in method " +
                     "transferFile(Storage storageFrom, Storage storageTo, long id) " +
