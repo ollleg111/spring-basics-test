@@ -17,16 +17,12 @@ STORAGE_SIZE NUMBER NOT NULL
 @Table(name = "STORAGE")
 public class Storage {
     private long id;
-    private String [] formatSupported;
+    private String[] formatSupported;
     private String storageCountry;
     private long storageSize;
+    private String formatSupportedToString;
 
-    public Storage() {}
-
-    public Storage(String[] formatSupported, String storageCountry, long storageSize) {
-        this.formatSupported = formatSupported;
-        this.storageCountry = storageCountry;
-        this.storageSize = storageSize;
+    public Storage() {
     }
 
     @Id
@@ -37,9 +33,13 @@ public class Storage {
         return id;
     }
 
-    @Column(name = "FORMAT_SUPPORTED")
     public String[] getFormatSupported() {
         return formatSupported;
+    }
+
+    @Column(name = "FORMAT_SUPPORTED")
+    public String getFormatSupportedToString() {
+        return formatSupportedToString;
     }
 
     @Column(name = "STORAGE_COUNTRY")
@@ -60,6 +60,9 @@ public class Storage {
         this.formatSupported = formatSupported;
     }
 
+    public void setFormatSupportedToString(String formatSupportedToString) {
+        this.formatSupportedToString = formatSupportedToString;
+    }
     public void setStorageCountry(String storageCountry) {
         this.storageCountry = storageCountry;
     }
@@ -68,14 +71,22 @@ public class Storage {
         this.storageSize = storageSize;
     }
 
-//    public String supportingFormatToString(){
-//        String str = Arrays.toString(formatSupported);
-//        return str.substring(1, str.length() -1);
-//    }
+    public String formatSupportedToString() {
+        String str = Arrays.toString(formatSupported);
+        return str.substring(1, str.length() - 1);
+    }
 
-//    public String supportingFormatToArray(){
-//        return formatSupported.s
-//    }
+    public String[] formatSupportedToArray() {
+        return formatSupportedToString.split(", ");
+    }
+
+    public boolean isFormatSupported(String fileFormat) {
+        for (String str : formatSupported) {
+            if (str.equals(fileFormat))
+                return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -86,7 +97,6 @@ public class Storage {
 
         if (id != storage.id) return false;
         if (storageSize != storage.storageSize) return false;
-        // Probably incorrect - comparing Object[] arrays with Arrays.equals
         if (!Arrays.equals(formatSupported, storage.formatSupported)) return false;
         return storageCountry.equals(storage.storageCountry);
     }

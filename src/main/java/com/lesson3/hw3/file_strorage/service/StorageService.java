@@ -54,39 +54,47 @@ public class StorageService {
 
     public void put(Storage storage, File file) throws BadRequestException {
         validateExist(storage, file);
-
+        checkFormatFile(storage, file);
         file.setStorage(storage);
         fileDAO.update(file);
     }
 
     public void delete(Storage storage, File file) throws BadRequestException {
         validateExist(storage, file);
-
         file.setStorage(null);
         fileDAO.update(file);
     }
 
     public void transferAll(Storage storageFrom, Storage storageTo) throws BadRequestException {
-        if (storageDAO.getStorageAmount(storageTo) > storageDAO.getStorageAmount(storageFrom))
+        if (storageDAO.getStorageAmount(storageTo) >= storageDAO.getStorageAmount(storageFrom))
             throw new BadRequestException("Do not have needed amount in storageTo in method " +
                     "transferAll(Storage storageFrom, Storage storageTo) from class " +
                     StorageService.class.getName());
 
         List<File> fileList = storageDAO.filesList(storageFrom.getId());
         for (File file : fileList) {
+            checkFormatFile(storageTo, file);
             file.setStorage(storageTo);
             fileDAO.update(file);
         }
     }
 
     public void transferFile(Storage storageFrom, Storage storageTo, long id) throws BadRequestException {
-        if ((storageDAO.getStorageAmount(storageTo) + storageDAO.getFileSize(id)) >
-                storageDAO.getStorageAmount(storageFrom))
+        File file = fileDAO.findById(id);
+
+        if (file == null || file.getStorage() == null || file.getStorage().getId() != storageFrom.getId())
+            throw new BadRequestException("Storage: " + storageFrom.getId() +
+                    " does not have file with id: " + id + " in method" +
+                    " transferFile(Storage storageFrom, Storage storageTo, long id) " +
+                    "from class " + StorageService.class.getName());
+
+        if ((storageDAO.getStorageAmount(storageTo) - storageDAO.getFilledVolume(storageTo.getId()))
+                >= storageDAO.getFileSize(id))
             throw new BadRequestException("Do not have needed amount in storageTo in method " +
                     "transferFile(Storage storageFrom, Storage storageTo, long id) " +
-                    StorageService.class.getName());
+                    "from class " + StorageService.class.getName());
 
-        File file = fileDAO.findById(id);
+        checkFormatFile(storageTo, file);
         file.setStorage(storageTo);
         fileDAO.update(file);
     }
@@ -98,5 +106,13 @@ public class StorageService {
                 BadRequestException("Storage with id: " + storage.getId() +
                 "does not exist in method validateExist(Storage storage, File file) from class " +
                 StorageService.class.getName());
+    }
+
+    private void checkFormatFile(Storage storage, File file) throws BadRequestException {
+        if (!storage.isFormatSupported(file.getFormat())) {
+            throw new BadRequestException("Storage: " + storage.getId() + " does not support format file: "
+                    + file.getName() + " in method checkFormatFile(Storage storage, File file) from class " +
+                    StorageService.class.getName());
+        }
     }
 }

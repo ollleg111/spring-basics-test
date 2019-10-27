@@ -44,18 +44,6 @@ public class StorageDAO extends GeneralDAO<Storage> {
         return super.findById(id);
     }
 
-    public long getStorageAmount(Storage storage) throws BadRequestException {
-        try (Session session = hibernateUtil.openSession()) {
-            Query<Long> query = session.createQuery(Constants.FIND_AMOUNT_OF_STORAGE, Long.class);
-            query.setParameter("id", storage.getId());
-
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            throw new BadRequestException("Storage id: " + storage.getId() + " was not found in method " +
-                    "getStorageSize(Storage storage) from class " + StorageDAO.class.getName());
-        }
-    }
-
     public List<File> filesList(long storageId) throws HibernateException {
         try (Session session = hibernateUtil.openSession()) {
 
@@ -69,6 +57,31 @@ public class StorageDAO extends GeneralDAO<Storage> {
         }
     }
 
+    public long getStorageAmount(Storage storage) throws BadRequestException {
+        try (Session session = hibernateUtil.openSession()) {
+            Query<Long> query = session.createQuery(Constants.FIND_AMOUNT_OF_STORAGE, Long.class);
+            query.setParameter("id", storage.getId());
+
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new BadRequestException("Storage id: " + storage.getId() + " was not found in method " +
+                    "getStorageSize(Storage storage) from class " + StorageDAO.class.getName());
+        }
+    }
+
+    public long getFilledVolume(long id) throws HibernateException {
+        try (Session session = hibernateUtil.openSession()) {
+
+            Query<Long> query = session.createQuery(Constants.STORAGE_FILLED_VOLUME, Long.class);
+            query.setParameter("storage", id);
+
+            return query.getSingleResult();
+        } catch (HibernateException e) {
+            throw new HibernateException("Operation with storage with id: " + id
+                    + " was filed in method getStorageAmountSize(long id) from class " + StorageDAO.class.getName());
+        }
+    }
+
     public long getFileSize(long id) throws HibernateException {
         try (Session session = hibernateUtil.openSession()) {
 
@@ -77,7 +90,7 @@ public class StorageDAO extends GeneralDAO<Storage> {
 
             return query.getSingleResult();
         } catch (HibernateException e) {
-            throw new HibernateException("Operation with file  with id: " + id
+            throw new HibernateException("Operation with file with id: " + id
                     + " was filed in method getFileSize(long id) from class " + StorageDAO.class.getName());
         }
     }
