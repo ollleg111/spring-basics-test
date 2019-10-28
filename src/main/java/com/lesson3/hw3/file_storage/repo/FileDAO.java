@@ -1,8 +1,8 @@
-package com.lesson3.hw3.file_strorage.repo;
+package com.lesson3.hw3.file_storage.repo;
 
-import com.lesson3.hw3.file_strorage.util.HibernateUtil;
-import com.lesson3.hw3.file_strorage.constants.Constants;
-import com.lesson3.hw3.file_strorage.model.File;
+import com.lesson3.hw3.file_storage.util.HibernateUtil;
+import com.lesson3.hw3.file_storage.constants.Constants;
+import com.lesson3.hw3.file_storage.model.File;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

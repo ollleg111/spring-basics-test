@@ -1,14 +1,15 @@
-package com.lesson3.hw3.file_strorage.controller;
+package com.lesson3.hw3.file_storage.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lesson3.hw3.file_strorage.model.File;
-import com.lesson3.hw3.file_strorage.model.Storage;
-import com.lesson3.hw3.file_strorage.service.FileService;
-import com.lesson3.hw3.file_strorage.service.StorageService;
+import com.lesson3.hw3.file_storage.model.File;
+import com.lesson3.hw3.file_storage.model.Storage;
+import com.lesson3.hw3.file_storage.service.FileService;
+import com.lesson3.hw3.file_storage.service.StorageService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.io.InputStream;
 
+@Controller
+@RequestMapping("/storage")
 public class StorageController {
     private StorageService storageService;
     private FileService fileService;
@@ -106,6 +109,24 @@ public class StorageController {
     transferAll(Storage storageFrom, Storage storageTo) - трансфер всех файлов
     transferFile(Storage storageFrom, Storage storageTo, long id) - трансфер файла с хранилища storageFrom по его айди
      */
+
+    @RequestMapping(method = RequestMethod.PUT,
+            value = "/putFile",
+            produces = "text/plan")
+    public @ResponseBody
+    String put(InputStream data) throws HibernateException {
+        try {
+            return "Storage with id: "
+                    + storageService.update(new ObjectMapper().readValue(data, Storage.class)).getId()
+                    + " was updated";
+        } catch (JsonParseException e) {
+            return e.getMessage();
+        } catch (JsonMappingException e) {
+            return e.getMessage();
+        } catch (IOException e) {
+            return e.getMessage();
+        }
+    }
 
     public void put(Storage storage, File file) throws Exception {
         storageService.put(storage, file);

@@ -1,4 +1,4 @@
-package com.lesson3.hw3.file_strorage.model;
+package com.lesson3.hw3.file_storage.model;
 
 import javax.persistence.*;
 import java.util.Objects;

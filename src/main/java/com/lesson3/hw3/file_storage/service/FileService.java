@@ -1,8 +1,8 @@
-package com.lesson3.hw3.file_strorage.service;
+package com.lesson3.hw3.file_storage.service;
 
-import com.lesson3.hw3.file_strorage.exceptions.BadRequestException;
-import com.lesson3.hw3.file_strorage.model.File;
-import com.lesson3.hw3.file_strorage.repo.FileDAO;
+import com.lesson3.hw3.file_storage.exceptions.BadRequestException;
+import com.lesson3.hw3.file_storage.model.File;
+import com.lesson3.hw3.file_storage.repo.FileDAO;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

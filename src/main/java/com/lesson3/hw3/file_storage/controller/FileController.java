@@ -1,12 +1,13 @@
-package com.lesson3.hw3.file_strorage.controller;
+package com.lesson3.hw3.file_storage.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lesson3.hw3.file_strorage.model.File;
-import com.lesson3.hw3.file_strorage.service.FileService;
+import com.lesson3.hw3.file_storage.model.File;
+import com.lesson3.hw3.file_storage.service.FileService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.io.InputStream;
 
+@Controller
+@RequestMapping("/file")
 public class FileController {
     private FileService fileService;
     private File file;

@@ -1,10 +1,10 @@
-package com.lesson3.hw3.file_strorage.repo;
+package com.lesson3.hw3.file_storage.repo;
 
-import com.lesson3.hw3.file_strorage.constants.Constants;
-import com.lesson3.hw3.file_strorage.exceptions.BadRequestException;
-import com.lesson3.hw3.file_strorage.model.File;
-import com.lesson3.hw3.file_strorage.model.Storage;
-import com.lesson3.hw3.file_strorage.util.HibernateUtil;
+import com.lesson3.hw3.file_storage.constants.Constants;
+import com.lesson3.hw3.file_storage.exceptions.BadRequestException;
+import com.lesson3.hw3.file_storage.model.File;
+import com.lesson3.hw3.file_storage.model.Storage;
+import com.lesson3.hw3.file_storage.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;

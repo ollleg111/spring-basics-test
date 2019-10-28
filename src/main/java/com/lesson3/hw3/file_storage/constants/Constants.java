@@ -1,4 +1,4 @@
-package com.lesson3.hw3.file_strorage.constants;
+package com.lesson3.hw3.file_storage.constants;
 
 public class Constants {
     public static final String FILE_REQUEST_DELETE = "DELETE FROM FILES WHERE ID = ?";

@@ -1,6 +1,6 @@
-package com.lesson3.hw3.file_strorage.repo;
+package com.lesson3.hw3.file_storage.repo;
 
-import com.lesson3.hw3.file_strorage.util.HibernateUtil;
+import com.lesson3.hw3.file_storage.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

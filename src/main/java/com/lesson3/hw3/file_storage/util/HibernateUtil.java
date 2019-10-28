@@ -1,4 +1,4 @@
-package com.lesson3.hw3.file_strorage.util;
+package com.lesson3.hw3.file_storage.util;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
