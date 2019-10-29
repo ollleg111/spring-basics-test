@@ -25,6 +25,12 @@ public class Storage {
     public Storage() {
     }
 
+    public Storage(String[] formatSupported, String storageCountry, long storageSize) {
+        this.formatSupported = formatSupported;
+        this.storageCountry = storageCountry;
+        this.storageSize = storageSize;
+    }
+
     @Id
     @Column(name = "ID")
     @SequenceGenerator(name = "STORAGE_S", sequenceName = "STORAGE_SEQ", allocationSize = 1)

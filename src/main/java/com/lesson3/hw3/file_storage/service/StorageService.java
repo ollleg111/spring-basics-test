@@ -88,8 +88,8 @@ public class StorageService {
                     " transferFile(Storage storageFrom, Storage storageTo, long id) " +
                     "from class " + StorageService.class.getName());
 
-        if ((storageDAO.getStorageAmount(storageTo) - storageDAO.getFilledVolume(storageTo.getId()))
-                >= storageDAO.getFileSize(id))
+        if ((storageDAO.getStorageAmount(storageTo) - storageDAO.getFilledVolume(storageTo.getId())) >=
+                storageDAO.getFileSize(id))
             throw new BadRequestException("Do not have needed amount in storageTo in method " +
                     "transferFile(Storage storageFrom, Storage storageTo, long id) " +
                     "from class " + StorageService.class.getName());
