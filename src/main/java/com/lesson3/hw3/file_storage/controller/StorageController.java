@@ -27,7 +27,6 @@ public class StorageController {
     private StorageService storageService;
     private FileService fileService;
     private Storage storage;
-    private ObjectMapper mapper;
 
     @Autowired
     public StorageController(StorageService storageService, FileService fileService) {
@@ -160,30 +159,15 @@ public class StorageController {
             produces = "text/plan")
     public @ResponseBody
     String transferAll(InputStream data) throws HibernateException {
-        try {
-            mapper = new ObjectMapper();
-            MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
-            Map<String, Object> dataMap = mapper.readValue(data, type);
+        List<Object> list = mapper(data);
 
-            List<Object> arrayList = new ArrayList<>();
-            for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
-                arrayList.add(entry.getValue());
-            }
-            Storage storageFrom = (Storage) arrayList.get(0);
-            Storage storageTo = (Storage) arrayList.get(1);
-            
-            storageService.transferAll(storageFrom, storageTo);
+        Storage storageFrom = (Storage) list.get(0);
+        Storage storageTo = (Storage) list.get(1);
 
-            return "All from storage with id: " + storageFrom.getId() +
-                    " was transferred to storage with id: " + storageTo.getId();
+        storageService.transferAll(storageFrom, storageTo);
 
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
-        } catch (IOException e) {
-            return e.getMessage();
-        }
+        return "All from storage with id: " + storageFrom.getId() +
+                " was transferred to storage with id: " + storageTo.getId();
     }
 
     @RequestMapping(method = RequestMethod.PUT,
@@ -191,30 +175,33 @@ public class StorageController {
             produces = "text/plan")
     public @ResponseBody
     String transferFile(InputStream data) throws HibernateException {
-        try {
-            mapper = new ObjectMapper();
-            MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
-            Map<String, Object> dataMap = mapper.readValue(data, type);
+        List<Object> list = mapper(data);
 
+        Storage storageFrom = (Storage) list.get(0);
+        Storage storageTo = (Storage) list.get(1);
+        Long id = (Long) list.get(2);
+
+        storageService.transferFile(storageFrom, storageTo, id);
+
+        return "File with id: " + id + " moved from storage with id: " + storageFrom.getId() +
+                " was transferred to storage with id: " + storageTo.getId();
+    }
+
+    private List<Object> mapper(InputStream inputStream) throws HibernateException {
+        ObjectMapper mapper = new ObjectMapper();
+        MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
+        try {
+            Map<String, Object> dataMap = mapper.readValue(inputStream, type);
             List<Object> arrayList = new ArrayList<>();
             for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
                 arrayList.add(entry.getValue());
             }
-            Storage storageFrom = (Storage) arrayList.get(0);
-            Storage storageTo = (Storage) arrayList.get(1);
-            Long id = (Long) arrayList.get(2);
+            return arrayList;
 
-            storageService.transferFile(storageFrom, storageTo, id);
-
-            return "File with id: " + id + " moved from storage with id: " + storageFrom.getId() +
-                    " was transferred to storage with id: " + storageTo.getId();
-
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
-            return e.getMessage();
+            e.getMessage();
         }
+        throw new HibernateException("private method mapper(InputStream inputStream) in class " +
+                StorageController.class.getName() + " does not work ");
     }
 }
