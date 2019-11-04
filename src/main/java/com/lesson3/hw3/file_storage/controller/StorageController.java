@@ -154,24 +154,6 @@ public class StorageController {
         }
     }
 
-//    ObjectMapper mapper = new ObjectMapper();
-//    MapType type = mapper.getTypeFactory().constructMapType(
-//            Map.class, String.class, Object.class);
-//    Map<String, Object> data = mapper.readValue(jsonString, type);
-
-//    @PutMapping("/transfer/All")
-//    public void transferAll(@RequestParam Storage storageFrom,
-//                            @RequestParam Storage storageTo) throws HibernateException {
-//        storageService.transferAll(storageFrom, storageTo);
-//    }
-//
-//    @PutMapping("/transfer/{id}")
-//    public void transferFile(@RequestParam Storage storageFrom,
-//                             @RequestParam Storage storageTo,
-//                             @PathVariable long id) throws HibernateException {
-//        storageService.transferFile(storageFrom, storageTo, id);
-//    }
-
     @RequestMapping(method = RequestMethod.PUT,
             value = "/transferAll",
             produces = "text/plan")
@@ -186,10 +168,12 @@ public class StorageController {
             for (Map.Entry<String, Storage> entry : dataMap.entrySet()) {
                 arrayList.add(entry.getValue());
             }
-            storageService.transferAll(arrayList.get(0), arrayList.get(1));
+            Storage storageFrom = arrayList.get(0);
+            Storage storageTo = arrayList.get(1);
+            storageService.transferAll(storageFrom, storageTo);
 
-            return "All from storage with id: " + arrayList.get(0).getId() +
-                    " was transferred to storage with id: " + arrayList.get(1).getId();
+            return "All from storage with id: " + storageFrom.getId() +
+                    " was transferred to storage with id: " + storageTo.getId();
 
         } catch (JsonParseException e) {
             return e.getMessage();
