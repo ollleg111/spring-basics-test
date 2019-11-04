@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -159,50 +158,110 @@ public class StorageController {
             value = "/transferAll",
             produces = "text/plan")
     public @ResponseBody
-    String transferAll(InputStream data) throws HibernateException, IOException{
-        List<Object> list = mapper(data);
+    String transferAll(InputStream data) throws HibernateException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Storage.class);
+            Map<String, Storage> dataMap = mapper.readValue(data, type);
 
-        Storage storageFrom = (Storage) list.get(0);
-        Storage storageTo = (Storage) list.get(1);
+            List<Storage> arrayList = new ArrayList<>();
+            for (Map.Entry<String, Storage> entry : dataMap.entrySet()) {
+                arrayList.add(entry.getValue());
+            }
+            storageService.transferAll(arrayList.get(0), arrayList.get(1));
 
-        storageService.transferAll(storageFrom, storageTo);
+            return "All from storage with id: " + arrayList.get(0).getId() +
+                    " was transferred to storage with id: " + arrayList.get(1).getId();
 
-        return "All from storage with id: " + storageFrom.getId() +
-                " was transferred to storage with id: " + storageTo.getId();
+        } catch (JsonParseException e) {
+            return e.getMessage();
+        } catch (JsonMappingException e) {
+            return e.getMessage();
+        } catch (IOException e) {
+            return e.getMessage();
+        }
     }
 
     @RequestMapping(method = RequestMethod.PUT,
             value = "/transferFile",
             produces = "text/plan")
     public @ResponseBody
-    String transferFile(InputStream data) throws HibernateException, IOException {
-        List<Object> list = mapper(data);
-
-        Storage storageFrom = (Storage) list.get(0);
-        Storage storageTo = (Storage) list.get(1);
-        Long id = (Long) list.get(2);
-
-        storageService.transferFile(storageFrom, storageTo, id);
-
-        return "File with id: " + id + " moved from storage with id: " + storageFrom.getId() +
-                " was transferred to storage with id: " + storageTo.getId();
-    }
-
-    private List<Object> mapper(InputStream inputStream) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
+    String transferFile(InputStream data) throws HibernateException {
         try {
-            Map<String, Object> dataMap = mapper.readValue(inputStream, type);
+            ObjectMapper mapper = new ObjectMapper();
+            MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
+            Map<String, Object> dataMap = mapper.readValue(data, type);
+
             List<Object> arrayList = new ArrayList<>();
             for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
                 arrayList.add(entry.getValue());
             }
-            return arrayList;
+            Storage storageFrom = (Storage) arrayList.get(0);
+            Storage storageTo = (Storage) arrayList.get(1);
+            Long id = (Long) arrayList.get(2);
+
+            storageService.transferFile(storageFrom, storageTo, id);
+
+            return "File with id: " + id + " moved from storage with id: " + storageFrom.getId() +
+                    " was transferred to storage with id: " + storageTo.getId();
 
         } catch (JsonParseException e) {
-            return Collections.singletonList(e.getMessage());
+            return e.getMessage();
         } catch (JsonMappingException e) {
-            return Collections.singletonList(e.getMessage());
+            return e.getMessage();
+        } catch (IOException e) {
+            return e.getMessage();
         }
     }
 }
+//    @RequestMapping(method = RequestMethod.PUT,
+//            value = "/transferAll",
+//            produces = "text/plan")
+//    public @ResponseBody
+//    String transferAll(InputStream data) throws HibernateException, IOException{
+//        List<Object> list = mapper(data);
+//
+//        Storage storageFrom = (Storage) list.get(0);
+//        Storage storageTo = (Storage) list.get(1);
+//
+//        storageService.transferAll(storageFrom, storageTo);
+//
+//        return "All from storage with id: " + storageFrom.getId() +
+//                " was transferred to storage with id: " + storageTo.getId();
+//    }
+//
+//    @RequestMapping(method = RequestMethod.PUT,
+//            value = "/transferFile",
+//            produces = "text/plan")
+//    public @ResponseBody
+//    String transferFile(InputStream data) throws HibernateException, IOException {
+//        List<Object> list = mapper(data);
+//
+//        Storage storageFrom = (Storage) list.get(0);
+//        Storage storageTo = (Storage) list.get(1);
+//        Long id = (Long) list.get(2);
+//
+//        storageService.transferFile(storageFrom, storageTo, id);
+//
+//        return "File with id: " + id + " moved from storage with id: " + storageFrom.getId() +
+//                " was transferred to storage with id: " + storageTo.getId();
+//    }
+
+//    private List<Object> mapper(InputStream inputStream) throws IOException {
+//        ObjectMapper mapper = new ObjectMapper();
+//        MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
+//        try {
+//            Map<String, Object> dataMap = mapper.readValue(inputStream, type);
+//            List<Object> arrayList = new ArrayList<>();
+//            for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
+//                arrayList.add(entry.getValue());
+//            }
+//            return arrayList;
+//
+//        } catch (JsonParseException e) {
+//            return Collections.singletonList(e.getMessage());
+//        } catch (JsonMappingException e) {
+//            return Collections.singletonList(e.getMessage());
+//        }
+//    }
+
