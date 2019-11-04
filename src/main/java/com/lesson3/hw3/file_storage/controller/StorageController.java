@@ -27,6 +27,7 @@ public class StorageController {
     private StorageService storageService;
     private FileService fileService;
     private Storage storage;
+    private ObjectMapper mapper;
 
     @Autowired
     public StorageController(StorageService storageService, FileService fileService) {
@@ -160,16 +161,17 @@ public class StorageController {
     public @ResponseBody
     String transferAll(InputStream data) throws HibernateException {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Storage.class);
-            Map<String, Storage> dataMap = mapper.readValue(data, type);
+            mapper = new ObjectMapper();
+            MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
+            Map<String, Object> dataMap = mapper.readValue(data, type);
 
-            List<Storage> arrayList = new ArrayList<>();
-            for (Map.Entry<String, Storage> entry : dataMap.entrySet()) {
+            List<Object> arrayList = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
                 arrayList.add(entry.getValue());
             }
-            Storage storageFrom = arrayList.get(0);
-            Storage storageTo = arrayList.get(1);
+            Storage storageFrom = (Storage) arrayList.get(0);
+            Storage storageTo = (Storage) arrayList.get(1);
+            
             storageService.transferAll(storageFrom, storageTo);
 
             return "All from storage with id: " + storageFrom.getId() +
@@ -190,7 +192,7 @@ public class StorageController {
     public @ResponseBody
     String transferFile(InputStream data) throws HibernateException {
         try {
-            ObjectMapper mapper = new ObjectMapper();
+            mapper = new ObjectMapper();
             MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
             Map<String, Object> dataMap = mapper.readValue(data, type);
 
