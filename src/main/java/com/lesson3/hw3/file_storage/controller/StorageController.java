@@ -168,7 +168,6 @@ public class StorageController {
             for (Map.Entry<String, Storage> entry : dataMap.entrySet()) {
                 arrayList.add(entry.getValue());
             }
-
             storageService.transferAll(arrayList.get(0), arrayList.get(1));
 
             return "All from storage with id: " + arrayList.get(0).getId() +
@@ -200,7 +199,6 @@ public class StorageController {
             Storage storageFrom = (Storage) arrayList.get(0);
             Storage storageTo = (Storage) arrayList.get(1);
             Long id = (Long) arrayList.get(2);
-
             storageService.transferFile(storageFrom, storageTo, id);
 
             return "File with id: " + id + " moved from storage with id: " + storageFrom.getId() +
