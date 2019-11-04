@@ -168,6 +168,7 @@ public class StorageController {
             for (Map.Entry<String, Storage> entry : dataMap.entrySet()) {
                 arrayList.add(entry.getValue());
             }
+
             storageService.transferAll(arrayList.get(0), arrayList.get(1));
 
             return "All from storage with id: " + arrayList.get(0).getId() +
