@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -158,7 +159,7 @@ public class StorageController {
             value = "/transferAll",
             produces = "text/plan")
     public @ResponseBody
-    String transferAll(InputStream data) throws HibernateException {
+    String transferAll(InputStream data) throws HibernateException, IOException{
         List<Object> list = mapper(data);
 
         Storage storageFrom = (Storage) list.get(0);
@@ -174,7 +175,7 @@ public class StorageController {
             value = "/transferFile",
             produces = "text/plan")
     public @ResponseBody
-    String transferFile(InputStream data) throws HibernateException {
+    String transferFile(InputStream data) throws HibernateException, IOException {
         List<Object> list = mapper(data);
 
         Storage storageFrom = (Storage) list.get(0);
@@ -187,7 +188,7 @@ public class StorageController {
                 " was transferred to storage with id: " + storageTo.getId();
     }
 
-    private List<Object> mapper(InputStream inputStream) throws HibernateException {
+    private List<Object> mapper(InputStream inputStream) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         MapType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
         try {
@@ -198,10 +199,10 @@ public class StorageController {
             }
             return arrayList;
 
-        } catch (IOException e) {
-            e.getMessage();
+        } catch (JsonParseException e) {
+            return Collections.singletonList(e.getMessage());
+        } catch (JsonMappingException e) {
+            return Collections.singletonList(e.getMessage());
         }
-        throw new HibernateException("private method mapper(InputStream inputStream) in class " +
-                StorageController.class.getName() + " does not work ");
     }
 }
