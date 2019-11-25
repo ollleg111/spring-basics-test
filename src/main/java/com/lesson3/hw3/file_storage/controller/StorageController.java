@@ -35,7 +35,8 @@ public class StorageController {
         this.fileService = fileService;
     }
 
-    @RequestMapping(method = RequestMethod.POST,
+    @RequestMapping(
+            method = RequestMethod.POST,
             value = "/saveStorage",
             produces = "text/plan")
     public @ResponseBody
@@ -45,16 +46,13 @@ public class StorageController {
             return "Storage with id: "
                     + storage.getId()
                     + " was saved";
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET,
+    @RequestMapping(
+            method = RequestMethod.GET,
             value = "/getStorage",
             produces = "text/plan")
     public @ResponseBody
@@ -64,16 +62,13 @@ public class StorageController {
             return "Storage with id: "
                     + storage.getId()
                     + " was getting";
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT,
+    @RequestMapping(
+            method = RequestMethod.PUT,
             value = "/updateStorage",
             produces = "text/plan")
     public @ResponseBody
@@ -82,27 +77,22 @@ public class StorageController {
             return "Storage with id: "
                     + storageService.update(new ObjectMapper().readValue(data, Storage.class)).getId()
                     + " was updated";
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }
     }
 
-    @RequestMapping(method = RequestMethod.DELETE,
+    @RequestMapping(
+            method = RequestMethod.DELETE,
             value = "/deleteStorage",
             produces = "text/plan")
     public @ResponseBody
     String callDelete(InputStream data) throws HibernateException {
         try {
             storageService.delete(new ObjectMapper().readValue(data, Storage.class).getId());
+
             return "Storage was deleting";
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
+
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -115,7 +105,8 @@ public class StorageController {
     transferFile(Storage storageFrom, Storage storageTo, long id) - трансфер файла с хранилища storageFrom по его айди
      */
 
-    @RequestMapping(method = RequestMethod.PUT,
+    @RequestMapping(
+            method = RequestMethod.PUT,
             value = "/putFile",
             produces = "text/plan")
     public @ResponseBody
@@ -124,18 +115,16 @@ public class StorageController {
             File file = new ObjectMapper().readValue(data, File.class);
             Storage storage = file.getStorage();
             storageService.put(storage, file);
+
             return "File with id: " + file.getId() + " was added to Storage: " + storage.getId();
 
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT,
+    @RequestMapping(
+            method = RequestMethod.PUT,
             value = "/deleteFile",
             produces = "text/plan")
     public @ResponseBody
@@ -144,18 +133,16 @@ public class StorageController {
             File file = new ObjectMapper().readValue(data, File.class);
             Storage storage = file.getStorage();
             storageService.delete(storage, file);
+
             return "File with id: " + file.getId() + " was deleted from Storage: " + storage.getId();
 
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT,
+    @RequestMapping(
+            method = RequestMethod.PUT,
             value = "/transferAll",
             produces = "text/plan")
     public @ResponseBody
@@ -164,14 +151,14 @@ public class StorageController {
 
         Storage storageFrom = (Storage) list.get(0);
         Storage storageTo = (Storage) list.get(1);
-
         storageService.transferAll(storageFrom, storageTo);
 
         return "All from storage with id: " + storageFrom.getId() +
                 " was transferred to storage with id: " + storageTo.getId();
     }
 
-    @RequestMapping(method = RequestMethod.PUT,
+    @RequestMapping(
+            method = RequestMethod.PUT,
             value = "/transferFile",
             produces = "text/plan")
     public @ResponseBody
@@ -181,7 +168,6 @@ public class StorageController {
         Storage storageFrom = (Storage) list.get(0);
         Storage storageTo = (Storage) list.get(1);
         Long id = (Long) list.get(2);
-
         storageService.transferFile(storageFrom, storageTo, id);
 
         return "File with id: " + id + " moved from storage with id: " + storageFrom.getId() +

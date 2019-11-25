@@ -26,13 +26,6 @@ public class File {
 
     public File() {}
 
-    public File(String name, String format, long size, Storage storage) {
-        this.name = name;
-        this.format = format;
-        this.size = size;
-        this.storage = storage;
-    }
-
     @Id
     @Column(name = "ID")
     @SequenceGenerator(name = "FILE_S", sequenceName = "FILE_SEQ", allocationSize = 1)
