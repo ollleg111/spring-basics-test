@@ -1,7 +1,5 @@
 package com.lesson3.hw3.file_storage.controller;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lesson3.hw3.file_storage.model.File;
 import com.lesson3.hw3.file_storage.service.FileService;
@@ -36,10 +34,6 @@ public class FileController {
             return "File with id: "
                     + file.getId()
                     + " was saved";
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -55,10 +49,6 @@ public class FileController {
             return "File with id: "
                     + file.getId()
                     + " was getting";
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -73,10 +63,6 @@ public class FileController {
             return "File with id: "
                     + fileService.update(new ObjectMapper().readValue(data, File.class)).getId()
                     + " was updated";
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -90,10 +76,6 @@ public class FileController {
         try {
             fileService.delete(new ObjectMapper().readValue(data, File.class).getId());
             return "File was deleting";
-        } catch (JsonParseException e) {
-            return e.getMessage();
-        } catch (JsonMappingException e) {
-            return e.getMessage();
         } catch (IOException e) {
             return e.getMessage();
         }

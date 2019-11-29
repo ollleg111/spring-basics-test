@@ -97,14 +97,10 @@ public class StorageController {
             return e.getMessage();
         }
     }
-
+    
     /*
     put(Storage storage, File file) - добавляет файл в хранилище. гарантируется что файл уже есть в условной БД
-    delete(Storage storage, File file)
-    transferAll(Storage storageFrom, Storage storageTo) - трансфер всех файлов
-    transferFile(Storage storageFrom, Storage storageTo, long id) - трансфер файла с хранилища storageFrom по его айди
      */
-
     @RequestMapping(
             method = RequestMethod.PUT,
             value = "/putFile",
@@ -123,6 +119,9 @@ public class StorageController {
         }
     }
 
+    /*
+    delete(Storage storage, File file)
+     */
     @RequestMapping(
             method = RequestMethod.PUT,
             value = "/deleteFile",
@@ -141,6 +140,9 @@ public class StorageController {
         }
     }
 
+    /*
+    transferAll(Storage storageFrom, Storage storageTo) - трансфер всех файлов
+     */
     @RequestMapping(
             method = RequestMethod.PUT,
             value = "/transferAll",
@@ -157,6 +159,9 @@ public class StorageController {
                 " was transferred to storage with id: " + storageTo.getId();
     }
 
+    /*
+    transferFile(Storage storageFrom, Storage storageTo, long id) - трансфер файла с хранилища storageFrom по его айди
+     */
     @RequestMapping(
             method = RequestMethod.PUT,
             value = "/transferFile",
