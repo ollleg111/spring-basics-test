@@ -97,7 +97,6 @@ public class StorageController {
             return e.getMessage();
         }
     }
-    
     /*
     put(Storage storage, File file) - добавляет файл в хранилище. гарантируется что файл уже есть в условной БД
      */
