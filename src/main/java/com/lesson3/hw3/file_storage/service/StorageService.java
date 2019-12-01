@@ -9,7 +9,6 @@ import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -46,18 +45,15 @@ public class StorageService {
 
     /*
      put(Storage storage, File file) - добавляет файл в хранилище. гарантируется что файл уже есть в условной БД
+     переделал в put(long storageId, long fileId)
      */
-    public void put(Storage storage, File file) throws BadRequestException {
-        storageNullValidator(storage);
-        if (storageDAO.findById(storage.getId()) == null) throw new
-                BadRequestException("Storage with id: " + storage.getId() +
-                " does not exist in method put(Storage storage, File file) from class " +
-                StorageService.class.getName());
+    public void put(long storageId, File file) throws BadRequestException {
+        Storage storage = findById(storageId);
 
-        long id = file.getId();
-        validationStorageSize(storage, id);
-        checkFileInStorage(storage, id);
-        checkFormat(storage, id);
+        long fileId = file.getId();
+        validationStorageSize(storageId, fileId);
+        checkFileInStorage(storageId, fileId);
+        checkFormat(storageId, fileId);
 
         file.setStorage(storage);
         fileDAO.update(file);
@@ -65,13 +61,11 @@ public class StorageService {
 
     /*
     delete(Storage storage, File file)
+    переделал в delete(long storageId, long fileId)
      */
-    public void delete(Storage storage, File file) throws BadRequestException {
-        storageNullValidator(storage);
-        if (storageDAO.findById(storage.getId()) == null) throw new
-                BadRequestException("Storage with id: " + storage.getId() +
-                " does not exist in method delete(Storage storage, File file) from class " +
-                StorageService.class.getName());
+    public void delete(long storageId, long fileId) throws BadRequestException {
+        storageNullValidator(storageDAO.findById(storageId));
+        File file = fileDAO.findById(fileId);
 
         file.setStorage(null);
         fileDAO.update(file);
@@ -93,13 +87,22 @@ public class StorageService {
         /*
         В одном хранилище не могут хранится файлы с одинаковым айди, но могут хранится файлы с одинаковыми именами
          */
-        if (!Collections.disjoint(
+
+        for(Long id: storageDAO.getIdFileInStorage(storageFrom.getId())){
+          
+        }
+
+//        if (
+                /*
+                 !Collections.disjoint(
                 storageDAO.getIdFileInStorage(storageTo.getId()),
-                storageDAO.getIdFileInStorage(storageFrom.getId()))) throw
-                new BadRequestException("Storage with id: " + storageFrom.getId() +
-                        " already contains file from storage with id: " + storageTo.getId() +
-                        " in method transferAll(Storage storageFrom, Storage storageTo) from class " +
-                        StorageService.class.getName());
+                storageDAO.getIdFileInStorage(storageFrom.getId()))
+                 */
+//               ) throw
+//                new BadRequestException("Storage with id: " + storageFrom.getId() +
+//                        " already contains file from storage with id: " + storageTo.getId() +
+//                        " in method transferAll(Storage storageFrom, Storage storageTo) from class " +
+//                        StorageService.class.getName());
 
         /*
          Storage может хранить файлы только поддерживаемого формата
@@ -129,9 +132,9 @@ public class StorageService {
                     " transferFile(Storage storageFrom, Storage storageTo, long id) from class + " +
                     StorageService.class.getName());
 
-        validationStorageSize(storageTo, id);
-        checkFileInStorage(storageTo, id);
-        checkFormat(storageTo, id);
+        validationStorageSize(storageTo.getId(), id);
+        checkFileInStorage(storageTo.getId(), id);
+        checkFormat(storageTo.getId(), id);
 
         File file = fileDAO.findById(id);
 
@@ -148,9 +151,9 @@ public class StorageService {
     /*
     Учитывайте макс размер хранилища
      */
-    private void validationStorageSize(Storage storageTo, long id) throws BadRequestException {
-        if ((storageDAO.getStorageAmount(storageTo) - storageDAO.getFilledVolume(storageTo.getId())) >=
-                storageDAO.getFileSize(id))
+    private void validationStorageSize(long storageId, long fileId) throws BadRequestException {
+        if ((storageDAO.getStorageAmount(storageDAO.findById(storageId)) - storageDAO.getFilledVolume(storageId)) >=
+                storageDAO.getFileSize(fileId))
             throw new BadRequestException("Do not have needed amount in storageTo in method" +
                     " validationStorageSize(Storage storageTo, long id)" +
                     " from class " + StorageService.class.getName());
@@ -159,10 +162,10 @@ public class StorageService {
     /*
     В одном хранилище не могут хранится файлы с одинаковым айди, но могут хранится файлы с одинаковыми именами
      */
-    private void checkFileInStorage(Storage storageTo, long id) throws BadRequestException {
-        if (storageDAO.getIdFileInStorage(storageTo.getId()).contains(id)) throw
-                new BadRequestException("Storage with id: " + storageTo.getId() +
-                        " already contains file with id: " + id +
+    private void checkFileInStorage(long storageId, long fileId) throws BadRequestException {
+        if (storageDAO.getIdFileInStorage(storageId).contains(fileId)) throw
+                new BadRequestException("Storage with id: " + storageId +
+                        " already contains file with id: " + fileId +
                         " in method checkFileInStorage(Storage storageTo, long id) from class "
                         + StorageService.class.getName());
     }
@@ -170,10 +173,10 @@ public class StorageService {
     /*
     Storage может хранить файлы только поддерживаемого формата
      */
-    private void checkFormat(Storage storageTo, long id) throws BadRequestException {
-        if (!storageDAO.getFormatFromStorage(storageTo.getId()).contains(fileDAO.findById(id).getFormat()))
-            throw new BadRequestException("Storage with id: " + storageTo.getId() +
-                    " does not support format file with id: " + id + " in method" +
+    private void checkFormat(long storageId, long fileId) throws BadRequestException {
+        if (!storageDAO.getFormatFromStorage(storageId).contains(fileDAO.findById(fileId).getFormat()))
+            throw new BadRequestException("Storage with id: " + storageId +
+                    " does not support format file with id: " + fileId + " in method" +
                     " checkFormat(Storage storageTo, long id) " +
                     " from class " + StorageService.class.getName());
     }

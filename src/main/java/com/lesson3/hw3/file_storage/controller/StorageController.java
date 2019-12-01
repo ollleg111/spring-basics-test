@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.lesson3.hw3.file_storage.model.File;
 import com.lesson3.hw3.file_storage.model.Storage;
-import com.lesson3.hw3.file_storage.service.FileService;
+//import com.lesson3.hw3.file_storage.service.FileService;
 import com.lesson3.hw3.file_storage.service.StorageService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +26,13 @@ import java.util.Map;
 @RequestMapping("/storage")
 public class StorageController {
     private StorageService storageService;
-    private FileService fileService;
+    //private FileService fileService;
     private Storage storage;
 
     @Autowired
-    public StorageController(StorageService storageService, FileService fileService) {
+    public StorageController(StorageService storageService/*, FileService fileService*/) {
         this.storageService = storageService;
-        this.fileService = fileService;
+        //this.fileService = fileService;
     }
 
     @RequestMapping(
@@ -99,6 +99,7 @@ public class StorageController {
     }
     /*
     put(Storage storage, File file) - добавляет файл в хранилище. гарантируется что файл уже есть в условной БД
+    переделал в put(long storageId, File file)
      */
     @RequestMapping(
             method = RequestMethod.PUT,
@@ -109,7 +110,7 @@ public class StorageController {
         try {
             File file = new ObjectMapper().readValue(data, File.class);
             Storage storage = file.getStorage();
-            storageService.put(storage, file);
+            storageService.put(storage.getId(), file);
 
             return "File with id: " + file.getId() + " was added to Storage: " + storage.getId();
 
@@ -120,6 +121,7 @@ public class StorageController {
 
     /*
     delete(Storage storage, File file)
+    переделал в delete(long storageId, long fileId)
      */
     @RequestMapping(
             method = RequestMethod.PUT,
@@ -130,7 +132,7 @@ public class StorageController {
         try {
             File file = new ObjectMapper().readValue(data, File.class);
             Storage storage = file.getStorage();
-            storageService.delete(storage, file);
+            storageService.delete(storage.getId(), file.getId());
 
             return "File with id: " + file.getId() + " was deleted from Storage: " + storage.getId();
 
