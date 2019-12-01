@@ -89,7 +89,7 @@ public class StorageService {
          */
 
         for(Long id: storageDAO.getIdFileInStorage(storageFrom.getId())){
-          
+
         }
 
 //        if (
