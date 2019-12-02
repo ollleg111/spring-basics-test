@@ -87,32 +87,16 @@ public class StorageService {
         /*
         В одном хранилище не могут хранится файлы с одинаковым айди, но могут хранится файлы с одинаковыми именами
          */
-
-        for(Long id: storageDAO.getIdFileInStorage(storageFrom.getId())){
-
+        for (File fileFrom : storageDAO.filesList(storageFrom.getId())) {
+            checkFileInStorage(storageTo.getId(), fileFrom.getId());
         }
-
-//        if (
-                /*
-                 !Collections.disjoint(
-                storageDAO.getIdFileInStorage(storageTo.getId()),
-                storageDAO.getIdFileInStorage(storageFrom.getId()))
-                 */
-//               ) throw
-//                new BadRequestException("Storage with id: " + storageFrom.getId() +
-//                        " already contains file from storage with id: " + storageTo.getId() +
-//                        " in method transferAll(Storage storageFrom, Storage storageTo) from class " +
-//                        StorageService.class.getName());
 
         /*
          Storage может хранить файлы только поддерживаемого формата
          */
-        if (!storageDAO.getFormatFromStorage(storageTo.getId()).containsAll(
-                storageDAO.getFormatFromStorage(storageFrom.getId())))
-            throw new BadRequestException("Storage with id: " + storageTo.getId() +
-                    " does not support format files from storage with id:" + storageFrom.getId() +
-                    " transferAll(Storage storageFrom, Storage storageTo) " +
-                    " from class " + StorageService.class.getName());
+        for (File fileFrom : storageDAO.filesList(storageFrom.getId())) {
+            checkFormat(storageTo.getId(), fileFrom.getId());
+        }
 
         List<File> fileList = storageDAO.filesList(storageFrom.getId());
         for (File file : fileList) {

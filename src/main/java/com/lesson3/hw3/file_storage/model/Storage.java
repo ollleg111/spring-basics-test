@@ -45,7 +45,6 @@ public class Storage {
         return storageSize;
     }
 
-
     @Column(name = "FORMAT_SUPPORTED")
     @Convert(converter = StringArrayToStringConverter.class)
     public String[] getFormatSupported() {
