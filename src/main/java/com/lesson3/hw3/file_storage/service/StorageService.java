@@ -78,7 +78,8 @@ public class StorageService {
         /*
         Учитывайте макс размер хранилища
          */
-        if (storageDAO.getStorageAmount(storageTo) >= storageDAO.getStorageAmount(storageFrom) +
+        if (storageDAO.getStorageAmount(storageTo) >=
+                storageDAO.getStorageAmount(storageFrom) +
                 storageDAO.getFilledVolume(storageTo.getId()))
             throw new BadRequestException("Do not have needed amount in storageTo in method" +
                     " transferAll(Storage storageFrom, Storage storageTo) from class " +
@@ -116,10 +117,10 @@ public class StorageService {
                     " transferFile(Storage storageFrom, Storage storageTo, long id) from class + " +
                     StorageService.class.getName());
 
-        validationStorageSize(storageTo.getId(), id);
-        checkFileInStorage(storageTo.getId(), id);
-        checkFormat(storageTo.getId(), id);
-
+        long idStorage = storageTo.getId();
+        validationStorageSize(idStorage, id);
+        checkFileInStorage(idStorage, id);
+        checkFormat(idStorage, id);
         File file = fileDAO.findById(id);
 
         file.setStorage(storageTo);
@@ -136,7 +137,8 @@ public class StorageService {
     Учитывайте макс размер хранилища
      */
     private void validationStorageSize(long storageId, long fileId) throws BadRequestException {
-        if ((storageDAO.getStorageAmount(storageDAO.findById(storageId)) - storageDAO.getFilledVolume(storageId)) >=
+        if ((storageDAO.getStorageAmount(storageDAO.findById(storageId)) -
+                storageDAO.getFilledVolume(storageId)) >=
                 storageDAO.getFileSize(fileId))
             throw new BadRequestException("Do not have needed amount in storageTo in method" +
                     " validationStorageSize(Storage storageTo, long id)" +
