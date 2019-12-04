@@ -26,13 +26,11 @@ import java.util.Map;
 @RequestMapping("/storage")
 public class StorageController {
     private StorageService storageService;
-    //private FileService fileService;
     private Storage storage;
 
     @Autowired
-    public StorageController(StorageService storageService/*, FileService fileService*/) {
+    public StorageController(StorageService storageService) {
         this.storageService = storageService;
-        //this.fileService = fileService;
     }
 
     @RequestMapping(
