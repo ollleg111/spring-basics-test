@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.lesson3.hw3.file_storage.model.File;
 import com.lesson3.hw3.file_storage.model.Storage;
-//import com.lesson3.hw3.file_storage.service.FileService;
 import com.lesson3.hw3.file_storage.service.StorageService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
