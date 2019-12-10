@@ -51,17 +51,4 @@ public class FileDAO extends GeneralDAO<File> {
                     + " was filed in method getStorage(long id) from class " + FileDAO.class.getName());
         }
     }
-
-    public String getFormat(long id) throws HibernateException {
-        try (Session session = hibernateUtil.openSession()) {
-
-            Query<String> query = session.createQuery(Constants.GET_FORMAT_FROM_FILE, String.class);
-            query.setParameter("id", id);
-
-            return query.getSingleResult();
-        } catch (HibernateException e) {
-            throw new HibernateException("Operation with file with id: " + id
-                    + " was filed in method getFormat(long id) from class " + FileDAO.class.getName());
-        }
-    }
 }
